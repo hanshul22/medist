@@ -8,6 +8,7 @@ import BlogSection from '../components/home/BlogSection';
 import CtaSection from '../components/home/CtaSection';
 // import NewsSection from '../components/news/NewsSection';
 import { Helmet } from 'react-helmet';
+import MostViewedPlans from '../components/home/mostViewedPlans';
 
 function HomePage() {
   return (
@@ -19,6 +20,7 @@ function HomePage() {
       
       <HeroSection />
       <ServicesHighlight />
+      <MostViewedPlans />
       <StatsSection />
       <LabFacilities />
       <TestimonialsSection />

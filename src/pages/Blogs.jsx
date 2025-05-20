@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, Calendar, Clock, ExternalLink, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { data } from '../data/data';
 
 function Blogs() {
     const [news, setNews] = useState([]);
@@ -20,35 +21,50 @@ function Blogs() {
       fetchNews();
     }, [filters, currentPage]);
   
-    const fetchNews = async () => {
+    const fetchNews = () => {
       try {
         setLoading(true);
-        let url = `https://newsapi.org/v2/everything?q=medical+healthcare${
-          filters.searchTerm ? `+${filters.searchTerm}` : ''
-        }&sortBy=${filters.sortBy}&language=en&pageSize=${articlesPerPage}&page=${currentPage}&apiKey=5f42e5d6a4834240944c5e64ab522cb9`;
-  
-        const response = await fetch(url);
-        const data = await response.json();
-  
+        
+        // Use the local data instead of API fetch
         if (data.status === 'ok') {
           const articles = data.articles || [];
-          setTotalResults(data.totalResults || 0);
+          setTotalResults(data.totalResults || articles.length);
           
           // Extract unique sources
           const uniqueSources = [...new Set(articles.map(article => article.source.name))];
           setSources(uniqueSources);
-  
+
+          // Filter by search term if provided
+          let filteredArticles = articles;
+          if (filters.searchTerm) {
+            const term = filters.searchTerm.toLowerCase();
+            filteredArticles = filteredArticles.filter(article => 
+              article.title.toLowerCase().includes(term) || 
+              article.description.toLowerCase().includes(term)
+            );
+          }
+
           // Filter by source if selected
-          const filteredArticles = filters.source === 'all' 
-            ? articles 
-            : articles.filter(article => article.source.name === filters.source);
-  
-          setNews(filteredArticles);
+          filteredArticles = filters.source === 'all' 
+            ? filteredArticles 
+            : filteredArticles.filter(article => article.source.name === filters.source);
+          
+          // Sort articles
+          if (filters.sortBy === 'publishedAt') {
+            filteredArticles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+          }
+          
+          // Pagination
+          const startIndex = (currentPage - 1) * articlesPerPage;
+          const paginatedArticles = filteredArticles.slice(startIndex, startIndex + articlesPerPage);
+          
+          setNews(paginatedArticles);
+          setTotalResults(filteredArticles.length);
           
           // If current page has no results but there are results on previous pages,
           // go back to the last page with results
-          if (filteredArticles.length === 0 && currentPage > 1 && data.totalResults > 0) {
-            const lastPageWithResults = Math.ceil(data.totalResults / articlesPerPage);
+          if (paginatedArticles.length === 0 && currentPage > 1 && filteredArticles.length > 0) {
+            const lastPageWithResults = Math.ceil(filteredArticles.length / articlesPerPage);
             setCurrentPage(Math.min(currentPage - 1, lastPageWithResults));
           }
         } else {
