@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, Phone, Search, FlaskConical } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,11 +14,7 @@ function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <FlaskConical size={24} className="text-primary mr-2" />
-            <span className="text-xl font-bold">
-              <span className="text-red-500">med</span>
-              <span className="text-blue-500">ist</span>
-            </span>
+            <img src={logo} alt="India Healthy Logo" className="h-44" />
           </Link>
 
           {/* Desktop Navigation */}

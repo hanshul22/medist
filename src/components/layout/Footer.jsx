@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Clock, FlaskConical, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
   return (
     <footer className="bg-neutral-800 text-neutral-200">
       {/* Main Footer */}
@@ -11,9 +12,11 @@ function Footer() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {/* Company Info */}
           <div>
-            <Link to="/" className="flex items-center space-x-2 mb-4">
-              <FlaskConical size={24} className="text-primary" />
-              <span className="text-lg font-bold text-white">MediLab</span>
+            <Link to="/" className="flex items-center ">
+              <div className="bg-white/20 w-auto h-20 flex items-center justify-center mb-10 backdrop-blur-md rounded-xl  drop-shadow-lg inline-block">
+                <img src={logo} alt="India Healthy Logo" className="h-44 drop-shadow-md" />
+              </div>
+
             </Link>
             <p className="mb-4 text-sm">
               Providing accurate, reliable, and timely laboratory testing services for over 20 years.
@@ -33,7 +36,7 @@ function Footer() {
               </a>
             </div>
           </div>
-          
+
           {/* Contact Info */}
           <div>
             <h3 className="text-white font-semibold mb-4">Contact Us</h3>
@@ -56,7 +59,7 @@ function Footer() {
               </li>
             </ul>
           </div>
-          
+
           {/* Quick Links */}
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
@@ -81,7 +84,7 @@ function Footer() {
               </li>
             </ul>
           </div>
-          
+
           {/* Newsletter */}
           <div>
             <h3 className="text-white font-semibold mb-4">Stay Updated</h3>
@@ -107,7 +110,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      
+
       {/* Bottom Footer */}
       <div className="border-t border-neutral-700 py-6">
         <div className="container">
